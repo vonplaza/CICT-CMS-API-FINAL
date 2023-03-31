@@ -22,9 +22,4 @@ class Curriculum extends Model
     {
         return $this->belongsTo(Department::class);
     }
-
-    public function curriculumLevels()
-    {
-        return $this->hasMany(CurriculumLevel::class);
-    }
 }
