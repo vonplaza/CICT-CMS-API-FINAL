@@ -21,8 +21,13 @@ class CurriculumLevel extends Model
         return $this->belongsTo(Curriculum::class);
     }
 
-    public function curriculumSubjects()
-    {
-        return $this->hasMany(CurriculumSubject::class);
-    }
+    // public function curriculumSubjects()
+    // {
+    //     return $this->belongsTo(Subject::class, 'metadata->');
+    // }
+
+    // public function curriculumSubjects()
+    // {
+    //     return $this->hasMany(CurriculumSubject::class);
+    // }
 }
