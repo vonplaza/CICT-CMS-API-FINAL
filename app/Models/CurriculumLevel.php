@@ -13,7 +13,8 @@ class CurriculumLevel extends Model
         'curriculum_id',
         'year_level',
         'status',
-        'version'
+        'version',
+        'metadata'
     ];
 
     public function curriculum()

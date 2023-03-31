@@ -15,7 +15,7 @@ class CurriculumController extends Controller
     public function index()
     {
         // $curriculums = Curriculum::all();
-        $curriculums = Curriculum::with('curriculumLevels.curriculumSubjects')->get();
+        $curriculums = Curriculum::with('curriculumLevels')->get();
         return new CurriculumResource($curriculums);
     }
 

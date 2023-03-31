@@ -30,7 +30,6 @@ Route::apiResource('profiles', ProfileController::class);
 
 Route::apiResource('curriculums', CurriculumController::class);
 Route::apiResource('curriculum-levels', CurriculumLevelController::class);
-Route::apiResource('curriculum_subjects', SubjectController::class);
 Route::apiResource('subjects', SubjectController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {

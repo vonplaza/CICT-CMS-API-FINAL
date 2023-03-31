@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('year_level');
             $table->string('status')->default('a');
             $table->decimal('version')->default(1.0);
+            $table->json('metadata')->default('{}');
             $table->timestamps();
         });
     }
