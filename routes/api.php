@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CurriculumController;
-use App\Http\Controllers\CurriculumLevelController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
@@ -26,15 +25,15 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('users', UserController::class);
-Route::apiResource('profiles', ProfileController::class);
 
-Route::apiResource('curriculum-levels', CurriculumLevelController::class);
 Route::apiResource('subjects', SubjectController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::apiResource('profiles', ProfileController::class);
     Route::apiResource('curriculums', CurriculumController::class);
     Route::post('getUser', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('curriculumApprove/{id}', [CurriculumController::class, 'approveCurriculum']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

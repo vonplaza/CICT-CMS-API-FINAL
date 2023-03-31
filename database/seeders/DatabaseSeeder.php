@@ -26,45 +26,6 @@ class DatabaseSeeder extends Seeder
             ->create();
 
 
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 1,
-            'year_level' => 1,
-        ]);
-
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 1,
-            'year_level' => 2,
-        ]);
-
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 1,
-            'year_level' => 3,
-        ]);
-
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 1,
-            'year_level' => 4,
-        ]);
-
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 2,
-            'year_level' => 1,
-        ]);
-
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 2,
-            'year_level' => 2,
-        ]);
-
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 2,
-            'year_level' => 3,
-        ]);
-
-        \App\Models\CurriculumLevel::factory()->create([
-            'curriculum_id' => 2,
-            'year_level' => 4,
-        ]);
 
 
         // $dep->curriculums()->createMany(

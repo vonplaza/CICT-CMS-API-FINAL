@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('department_id');
             $table->decimal('version')->default(1.0);
-            $table->string('status')->default('a');
+            $table->string('status')->default('i');
+            $table->json('metadata')->default('[]');
             $table->timestamps();
         });
     }

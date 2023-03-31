@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\approveCurriculum;
 use App\Models\Curriculum;
 use App\Http\Requests\StoreCurriculumRequest;
 use App\Http\Requests\UpdateCurriculumRequest;
 use App\Http\Resources\CurriculumResource;
+use Illuminate\Http\Request;
 
 class CurriculumController extends Controller
 {
@@ -14,9 +16,10 @@ class CurriculumController extends Controller
      */
     public function index()
     {
-        // $curriculums = Curriculum::all();
-        $curriculums = Curriculum::with('curriculumLevels')->get();
-        return new CurriculumResource($curriculums);
+        $curriculums = Curriculum::all();
+        // $curriculums = Curriculum::with('curriculumLevels')->get();
+        // return new CurriculumResource($curriculums);
+        return response()->json($curriculums);
     }
 
     /**
@@ -27,6 +30,19 @@ class CurriculumController extends Controller
         //
     }
 
+    public function approveCurriculum(Request $request, $id)
+    {
+        if ($request->user()->tokenCan('can_approve_revision')) {
+            $curriclum = Curriculum::find($id);
+
+            if ($curriclum)
+                $curriclum->update(['status' => 'a']);
+
+            return response()->json(['message' => 'success', 'curriclum' => $curriclum]);
+        }
+        return response()->json(['message' => 'you are not authorized'], 403);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -35,35 +51,7 @@ class CurriculumController extends Controller
 
     public function store(StoreCurriculumRequest $request)
     {
-        // return Curriculum::create($request->all());
-
-
-        // $request->all();
-
-        $curriculum = [
-            'version' => '1.0',
-            'user_id' => $request->user()->id,
-            'department_id' => $request->user()->department_id,
-            'status' => 'p',
-        ];
-        $subjects = [];
-
-
-        $inc = 0;
-        foreach ($request->subjects as $year_level) {
-            $inc++;
-            $level = [
-                'curriculum_id' => '1',
-                'metadata' => $year_level,
-                'version' => '1.00',
-                'year_level' => $inc,
-                'status' => 'p'
-            ];
-            $subjects[] = $level;
-        }
-        // $subjects = [];
-
-        return $subjects;
+        return Curriculum::create($request->all());
     }
 
     /**

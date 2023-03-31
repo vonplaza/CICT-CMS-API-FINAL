@@ -14,7 +14,14 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $token = $request->user()->createToken('auth-token')->plainTextToken;
+            $authorize = [
+                'reviewer' => ['can_approve_revision'],
+                'admin' => ['can_create_user', 'can_add_subject', 'can_create_curriculum'],
+                'faculty' => ['can_add_subject', 'can_create_curriculum'],
+                'chair' => ['can_add_subject', 'can_create_curriculum'],
+            ];
+
+            $token = $request->user()->createToken('auth-token', $authorize[$request->user()->role])->plainTextToken;
             return response()->json(['token' => $token, 'message' => 'login succesfully', 'user' => $request->user()]);
         }
 

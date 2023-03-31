@@ -11,7 +11,7 @@ class StoreProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,19 @@ class StoreProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required'],
+            'address' => ['required'],
+            'phoneNo' => ['required'],
+            'birthDate' => ['required'],
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'phone_no' => $this->phoneNo,
+            'birth_date' => $this->birthDate,
+            'user_id' => $this->User()->id
+        ]);
     }
 }
