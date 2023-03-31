@@ -28,11 +28,11 @@ Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('profiles', ProfileController::class);
 
-Route::apiResource('curriculums', CurriculumController::class);
 Route::apiResource('curriculum-levels', CurriculumLevelController::class);
 Route::apiResource('subjects', SubjectController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::apiResource('curriculums', CurriculumController::class);
     Route::post('getUser', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
 });

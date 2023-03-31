@@ -30,9 +30,40 @@ class CurriculumController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
+
     public function store(StoreCurriculumRequest $request)
     {
-        return Curriculum::create($request->all());
+        // return Curriculum::create($request->all());
+
+
+        // $request->all();
+
+        $curriculum = [
+            'version' => '1.0',
+            'user_id' => $request->user()->id,
+            'department_id' => $request->user()->department_id,
+            'status' => 'p',
+        ];
+        $subjects = [];
+
+
+        $inc = 0;
+        foreach ($request->subjects as $year_level) {
+            $inc++;
+            $level = [
+                'curriculum_id' => '1',
+                'metadata' => $year_level,
+                'version' => '1.00',
+                'year_level' => $inc,
+                'status' => 'p'
+            ];
+            $subjects[] = $level;
+        }
+        // $subjects = [];
+
+        return $subjects;
     }
 
     /**
