@@ -43,6 +43,14 @@ class CurriculumController extends Controller
         return response()->json(['message' => 'you are not authorized'], 403);
     }
 
+    public function submitRevision(Request $request)
+    {
+    }
+
+    public function approveRevision(Request $request)
+    {
+    }
+
     /**
      * Store a newly created resource in storage.
      */
