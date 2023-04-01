@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('revise_curriculum', function (Blueprint $table) {
+        Schema::create('curriculum_revisions', function (Blueprint $table) {
             $table->id();
             $table->integer('curriculum_id');
-            $table->decimal('version');
-            $table->json('metadata')->default('[]');
-            $table->string('department_id');
-            $table->string('status')->default('p');
             $table->integer('user_id');
+            $table->decimal('version')->default(1.0);
+            $table->string('status')->default('p');
+            $table->json('metadata')->default('[]');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('revise_curriculum');
+        Schema::dropIfExists('curriculum_revisions');
     }
 };

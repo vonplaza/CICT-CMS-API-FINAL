@@ -23,4 +23,19 @@ class Curriculum extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function oldCurriculums()
+    {
+        return $this->hasMany(CurriculumOld::class);
+    }
+
+    public function revisionCurriculums()
+    {
+        return $this->hasMany(CurriculumOld::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

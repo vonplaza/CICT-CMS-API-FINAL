@@ -15,10 +15,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $authorize = [
-                'reviewer' => ['can_approve_revision'],
-                'admin' => ['can_create_user', 'can_add_subject', 'can_create_curriculum'],
-                'faculty' => ['can_add_subject', 'can_create_curriculum'],
-                'chair' => ['can_add_subject', 'can_create_curriculum'],
+                'reviewer' => ['can_approve_revision', 'can_comment'],
+
+                'admin' => ['can_create_user', 'can_add_subject', 'can_create_curriculum', 'can_submit_revision'],
+
+                'faculty' => ['can_add_subject', 'can_create_curriculum', 'can_submit_revision'],
+
+                'chair' => ['can_add_subject', 'can_create_curriculum', 'can_submit_revision'],
             ];
 
             $token = $request->user()->createToken('auth-token', $authorize[$request->user()->role])->plainTextToken;

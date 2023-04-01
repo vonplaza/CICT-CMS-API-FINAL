@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('old_curriculum', function (Blueprint $table) {
+        Schema::create('curriculum_olds', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->decimal('version');
-            $table->json('metadata')->default('[]');
             $table->integer('curriculum_id');
+            $table->decimal('version')->default('1.0');
+            $table->json('metadata')->default('[]');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('old_curriculum');
+        Schema::dropIfExists('curriculum_olds');
     }
 };

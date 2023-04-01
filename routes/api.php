@@ -30,13 +30,15 @@ Route::apiResource('subjects', SubjectController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('profiles', ProfileController::class);
+    Route::post('curriculums/approve/{id}', [CurriculumController::class, 'approveCurriculum']);
+    Route::post('curriculums/submitRevision', [CurriculumController::class, 'submitRevision']);
+    Route::post('curriculums/updateRevision', [CurriculumController::class, 'updateRevision']);
+    Route::post('curriculums/approveRevision/{id}', [CurriculumController::class, 'approveRevision']);
     Route::apiResource('curriculums', CurriculumController::class);
+
+
     Route::post('getUser', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
-
-    Route::post('curriculums/approve/{id}', [CurriculumController::class, 'approveCurriculum']);
-    Route::post('curriculums/submitRevision/{id}', [CurriculumController::class, 'submitRevision']);
-    Route::post('curriculums/approveRevision/{id}', [CurriculumController::class, 'approveRevision']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

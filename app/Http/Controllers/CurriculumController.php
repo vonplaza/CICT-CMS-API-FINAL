@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\approveCurriculum;
 use App\Models\Curriculum;
 use App\Http\Requests\StoreCurriculumRequest;
+use App\Http\Requests\SubmitRevisionRequest;
 use App\Http\Requests\UpdateCurriculumRequest;
+use App\Http\Requests\UpdateRevisionRequest;
 use App\Http\Resources\CurriculumResource;
+use App\Models\CurriculumOld;
+use App\Models\CurriculumRevision;
 use Illuminate\Http\Request;
 
 class CurriculumController extends Controller
@@ -17,8 +21,7 @@ class CurriculumController extends Controller
     public function index()
     {
         $curriculums = Curriculum::all();
-        // $curriculums = Curriculum::with('curriculumLevels')->get();
-        // return new CurriculumResource($curriculums);
+        // $curriculums = Curriculum::with('user')->get();
         return response()->json($curriculums);
     }
 
@@ -35,20 +38,66 @@ class CurriculumController extends Controller
         if ($request->user()->tokenCan('can_approve_revision')) {
             $curriclum = Curriculum::find($id);
 
-            if ($curriclum)
-                $curriclum->update(['status' => 'a']);
+            if (!$curriclum) {
+                return response()->json(['message' => 'cannot find pending curriclum'], 404);
+            }
+            $curriclum->update(['status' => 'a']);
 
             return response()->json(['message' => 'success', 'curriclum' => $curriclum]);
         }
         return response()->json(['message' => 'you are not authorized'], 403);
     }
 
-    public function submitRevision(Request $request)
+    public function submitRevision(SubmitRevisionRequest $request)
     {
+        // if ($request->user()->tokenCan('can_submit_revision')) {
+        if (true) {
+            $curriculum = CurriculumRevision::create($request->all());
+            return response()->json(['message' => 'success', 'curriculum' => $curriculum]);
+        }
+        return response()->json(['message' => 'you are not authorized'], 403);
     }
 
-    public function approveRevision(Request $request)
+    public function approveRevision(Request $request, $id)
     {
+        // if ($request->user()->tokenCan('can_approve_revision')) {
+        if (true) {
+            $curriculum = CurriculumRevision::find($id);
+            if (!$curriculum) {
+                return response()->json(['message' => 'cannot find revision curriclum'], 404);
+            }
+
+            $refereceCurriculum = Curriculum::find($curriculum->curriculum_id);
+            if (!$refereceCurriculum) {
+                return response()->json(['message' => 'cannot find revision curriclum'], 404);
+            }
+
+            CurriculumOld::create([
+                'curriculum_id' => $refereceCurriculum->id,
+                'metadata' => $refereceCurriculum->metadata,
+                'version' => $refereceCurriculum->version
+            ]);
+
+            $refereceCurriculum->metadata = $curriculum->metadata;
+            $refereceCurriculum->version = $curriculum->version;
+            $refereceCurriculum->save();
+
+            $curriculum->update(['status' => 'a']);
+
+            return response()->json(['message' => 'success']);
+        }
+        return response()->json(['message' => 'you are not authorized'], 403);
+    }
+
+    public function updateRevision(UpdateRevisionRequest $request)
+    {
+        $curriculum = CurriculumRevision::find($request->id);
+        // $curriculum->update($request->all());
+        $curriculum->update([
+            'version' => $request->version,
+            'metadata' => $request->metadata,
+        ]);
+        return response()->json($curriculum);
     }
 
     /**
