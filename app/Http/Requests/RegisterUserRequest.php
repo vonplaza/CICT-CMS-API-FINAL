@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSubjectRequest extends FormRequest
+class RegisterUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        // return $this->user()->tokenCan('can_create_subject');
-        return true;
+        return $this->user()->tokenCan('can_create_user');
     }
 
     /**
@@ -23,19 +22,17 @@ class StoreSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subjectCode' => ['required', 'unique:subjects,subject_code'],
-            'description' => ['required'],
-            'departmentId' => ['required'],
-            'userId' => ['required']
+            'email' => ['required', 'unique:users,email'],
+            'password' => ['required', 'confirmed'],
+            'role' => ['required'],
+            'departmentId' => [],
         ];
     }
 
     public function prepareForValidation()
     {
-        $this->merge([
-            'subject_code' => $this->subjectCode,
-            'department_id' => $this->departmentId,
-            'user_id' => $this->userId
-        ]);
+        // return $this->merge([
+        //     'password' => bcrypt($this->password)
+        // ]);
     }
 }

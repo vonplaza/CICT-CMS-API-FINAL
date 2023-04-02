@@ -30,4 +30,9 @@ class CurriculumRevision extends Model
     {
         $this->belongsTo(Curriculum::class);
     }
+
+    public function comments()
+    {
+        $this->hasMany(Curriculum::class);
+    }
 }

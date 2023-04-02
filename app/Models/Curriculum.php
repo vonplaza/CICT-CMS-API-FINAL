@@ -38,4 +38,9 @@ class Curriculum extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function comments()
+    {
+        $this->hasMany(Curriculum::class);
+    }
 }

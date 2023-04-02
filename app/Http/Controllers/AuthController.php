@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,17 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Invalid email or password'], 401);
+    }
+
+    public function register(RegisterUserRequest $request)
+    {
+        $user = User::create([
+            'password' => bcrypt($request->password),
+            'email' => $request->email,
+            'role' => $request->role,
+            'department_id' => $request->departmentId,
+        ]);
+        return response()->json(['message' => 'user registration success', 'user' => $user]);
     }
 
     public function logout(Request $request)

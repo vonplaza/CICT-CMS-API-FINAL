@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login', [AuthController::class, 'login']);
-// Route::post('register', [AuthController::class, 'register']);
 
 Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('users', UserController::class);
@@ -31,6 +30,7 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('subjects', SubjectController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('register', [AuthController::class, 'register']);
     Route::apiResource('profiles', ProfileController::class);
     Route::post('curriculums/approve/{id}', [CurriculumController::class, 'approveCurriculum']);
     Route::post('curriculums/submitRevision', [CurriculumController::class, 'submitRevision']);
