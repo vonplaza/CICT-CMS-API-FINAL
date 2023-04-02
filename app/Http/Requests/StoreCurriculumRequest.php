@@ -11,6 +11,7 @@ class StoreCurriculumRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // return $this->user()->tokenCan('can_create_curriculum');
         return true;
     }
 

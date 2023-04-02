@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ElectiveSubjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,7 @@ Route::apiResource('subjects', SubjectController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('register', [AuthController::class, 'register']);
+    // Route::apiResource('profiles/uploadPic', ProfileController::class, 'uploadPic');
     Route::apiResource('profiles', ProfileController::class);
     Route::post('curriculums/approve/{id}', [CurriculumController::class, 'approveCurriculum']);
     Route::post('curriculums/submitRevision', [CurriculumController::class, 'submitRevision']);
@@ -39,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::apiResource('curriculums', CurriculumController::class);
     Route::apiResource('comments', CommentController::class);
+    Route::apiResource('electiveSubjects', ElectiveSubjectController::class);
 
     Route::post('getUser', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
