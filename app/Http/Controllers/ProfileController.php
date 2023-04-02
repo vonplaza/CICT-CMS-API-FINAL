@@ -7,6 +7,12 @@ use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
+use Illuminate\Contracts\Validation\Validator as ValidationValidator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
+use Illuminate\Validation\Validator;
+use Nette\Utils\Validators;
 
 class ProfileController extends Controller
 {
@@ -68,4 +74,38 @@ class ProfileController extends Controller
     {
         //
     }
+
+    public function uploadPic(Request $request)
+    {
+        $file = $request->file('image');
+        if (!$file)
+            return response()->json(['message' => 'profile pic is required']);
+
+
+        $userId = $request->user()->id;
+        $fileName = $userId . '-' . time() . '-' . $file->getClientOriginalName();
+        Storage::putFileAs('profilePics', $file, $fileName);
+
+        $profile = Profile::find($userId);
+        $profile->profile_pic = $fileName;
+        $profile->save();
+
+        return response()->json(['message' => 'success', 'data' => $request->user()->profile]);
+    }
+
+    // public function getProfilePic($filename)
+    // {
+    //     $path = storage_path('app/public/images/' . $filename);
+
+    //     if (!Storage::exists($path)) {
+    //         abort(404);
+    //     }
+
+    //     $file = Storage::get($path);
+    //     $type = Storage::mimeType($path);
+
+    //     $response = response($file, 200)->header('Content-Type', $type);
+
+    //     return $response;
+    // }
 }

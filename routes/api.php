@@ -32,7 +32,9 @@ Route::apiResource('subjects', SubjectController::class);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('register', [AuthController::class, 'register']);
-    // Route::apiResource('profiles/uploadPic', ProfileController::class, 'uploadPic');
+    Route::post('profiles/upload', [ProfileController::class, 'uploadPic']);
+    // Route::get('profiles/images/{filename}', [ProfileController::class, 'getProfilePic']);
+
     Route::apiResource('profiles', ProfileController::class);
     Route::post('curriculums/approve/{id}', [CurriculumController::class, 'approveCurriculum']);
     Route::post('curriculums/submitRevision', [CurriculumController::class, 'submitRevision']);
