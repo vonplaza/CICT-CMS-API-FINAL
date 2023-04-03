@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('curriculum_id')->nullable();
             $table->integer('curriculum_revision_id')->nullable();
+            $table->string('status')->default('a');
             $table->string('body');
             $table->timestamps();
         });

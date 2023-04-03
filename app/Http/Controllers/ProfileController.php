@@ -66,7 +66,7 @@ class ProfileController extends Controller
     {
         $profile->update($request->all());
         return response()->json([
-            'message'=>'profile updated successfuly',
+            'message' => 'profile updated successfuly',
             'profile' => $request->user()->profile
         ]);
     }
@@ -88,10 +88,10 @@ class ProfileController extends Controller
         $file = $request->file('image');
         if (!$file)
             return response()->json(['message' => 'profile pic is required'], 404);
-        
+
         $profile = auth()->user()->profile;
 
-        if(!$profile)
+        if (!$profile)
             return response()->json(['message' => 'profile has not been set up'], 404);
 
         $fileName = $profile->id . '-' . time() . '-' . $file->getClientOriginalName();
@@ -100,10 +100,6 @@ class ProfileController extends Controller
         $profile->update(['profile_pic' => $fileName]);
 
         return response()->json(['message' => 'success', 'data' => $profile]);
-        // $profile = Profile::find($userId);
-        // $profile->profile_pic = $fileName;
-        // $profile->save();
-
     }
 
     public function getProfilePic(Request $request, string $pic)

@@ -23,20 +23,23 @@ Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
+    Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus']);
     Route::apiResource('subjects', SubjectController::class);
-    Route::post('register', [AuthController::class, 'register']);
-    Route::post('profiles/upload', [ProfileController::class, 'uploadPic']);
+    Route::apiResource('electiveSubjects', ElectiveSubjectController::class);
 
+    Route::post('profiles/upload', [ProfileController::class, 'uploadPic']);
     Route::apiResource('profiles', ProfileController::class);
+
     Route::post('curriculums/approve/{id}', [CurriculumController::class, 'approveCurriculum']);
     Route::post('curriculums/submitRevision', [CurriculumController::class, 'submitRevision']);
     Route::post('curriculums/updateRevision', [CurriculumController::class, 'updateRevision']);
     Route::post('curriculums/approveRevision/{id}', [CurriculumController::class, 'approveRevision']);
-
     Route::apiResource('curriculums', CurriculumController::class);
-    Route::apiResource('comments', CommentController::class);
-    Route::apiResource('electiveSubjects', ElectiveSubjectController::class);
 
+    Route::apiResource('comments', CommentController::class);
+
+    Route::post('register', [AuthController::class, 'register']);
     Route::post('getUser', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
