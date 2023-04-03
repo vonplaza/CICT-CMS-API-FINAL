@@ -22,12 +22,18 @@ class StoreSubjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'subjectCode' => ['required', 'unique:subjects,subject_code'],
             'description' => ['required'],
             'departmentId' => ['required'],
-            'userId' => ['required']
+            'syllabus' => 'required|file|mimes:pdf'
         ];
+
+        // if ($this->hasFile('image')) {
+        //     $rules['image'] = 'image|mimes:jpeg,png|max:2048';
+        // }
+
+        return $rules;
     }
 
     public function prepareForValidation()
@@ -35,7 +41,7 @@ class StoreSubjectRequest extends FormRequest
         $this->merge([
             'subject_code' => $this->subjectCode,
             'department_id' => $this->departmentId,
-            'user_id' => $this->userId
+            'user_id' => $this->user()->id,
         ]);
     }
 }

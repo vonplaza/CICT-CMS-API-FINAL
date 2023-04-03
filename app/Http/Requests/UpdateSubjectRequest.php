@@ -11,7 +11,7 @@ class UpdateSubjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class UpdateSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'description' => 'sometimes|required|string|unique:subjects,description',
+            'subjectCode' => 'sometimes|required|string|unique:subjects,subject_code',
+            'syllabus' => 'sometimes|required|file|mimes:pdf|max:2048'
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'subject_code' => $this->subjectCode
+        ]);
     }
 }

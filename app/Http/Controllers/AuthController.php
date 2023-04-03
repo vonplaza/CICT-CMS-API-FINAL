@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
+use App\Mail\ResetPasswordEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
@@ -55,5 +61,50 @@ class AuthController extends Controller
         $user = auth()->user();
         $user = User::where('id', $user['id'])->with('profile', 'department')->first();
         return response()->json($user);
+    }
+
+    // public function forgetPassword(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['message' => 'Invalid email'], 400);
+    //     }
+
+    //     $email = $request->input('email');
+    //     $user = User::where('email', $email)->first();
+
+    //     if (!$user) {
+    //         return response()->json(['message' => 'User not found'], 404);
+    //     }
+
+    //     $code = Str::random(6);
+    //     DB::table('password_reset_tokens')->insert([
+    //         'email' => $email,
+    //         'token' => $code,
+    //         'created_at' => now()
+    //     ]);
+
+    //     Mail::to($user->email)->send(new ResetPasswordEmail($code));
+
+    //     return response()->json(['message' => 'Code sent to email']);
+    // }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $response = Password::sendResetLink(
+            $request->only('email')
+        );
+        return $response == Password::RESET_LINK_SENT
+            ? response()->json(['message' => 'Password reset email sent.'], 200)
+            : response()->json(['message' => 'Failed to send password reset email.'], 400);
+    }
+
+    public function broker()
+    {
+        return Password::broker();
     }
 }

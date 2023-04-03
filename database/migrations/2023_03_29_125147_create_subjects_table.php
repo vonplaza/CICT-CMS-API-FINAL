@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('subject_code')->unique();
             $table->string('description');
             $table->string('department_id')->nullable();
-            $table->string('syllabus_path');
+            $table->string('syllabus_path')->nullable();
             $table->string('status')->default('a');
             $table->timestamps();
         });

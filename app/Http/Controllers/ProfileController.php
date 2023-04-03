@@ -81,7 +81,6 @@ class ProfileController extends Controller
         if (!$file)
             return response()->json(['message' => 'profile pic is required']);
 
-
         $userId = $request->user()->id;
         $fileName = $userId . '-' . time() . '-' . $file->getClientOriginalName();
         Storage::putFileAs('profilePics', $file, $fileName);
@@ -93,19 +92,18 @@ class ProfileController extends Controller
         return response()->json(['message' => 'success', 'data' => $request->user()->profile]);
     }
 
-    // public function getProfilePic($filename)
-    // {
-    //     $path = storage_path('app/public/images/' . $filename);
+    public function getProfilePic(Request $request, string $pic)
+    {
+        $filePath = storage_path('app/profilePics/' . $pic);
 
-    //     if (!Storage::exists($path)) {
-    //         abort(404);
-    //     }
+        if (!file_exists($filePath)) {
+            return response()->json(['message' => 'image not found'], 404);
+        }
 
-    //     $file = Storage::get($path);
-    //     $type = Storage::mimeType($path);
+        $fileContents = file_get_contents($filePath);
 
-    //     $response = response($file, 200)->header('Content-Type', $type);
-
-    //     return $response;
-    // }
+        return response($fileContents)
+            ->header('Content-Type', 'image/jpeg');
+        // ->header('Content-Disposition', 'inline; filename="' . '1-1680422701-WIN_20230308_12_44_42_Pro.jpg' . '"');
+    }
 }

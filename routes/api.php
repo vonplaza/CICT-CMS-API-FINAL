@@ -12,28 +12,19 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 Route::post('login', [AuthController::class, 'login']);
 
+Route::get('profiles/images/{image}', [ProfileController::class, 'getProfilePic']);
 Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('users', UserController::class);
 
-Route::apiResource('subjects', SubjectController::class);
+Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::apiResource('subjects', SubjectController::class);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('profiles/upload', [ProfileController::class, 'uploadPic']);
-    // Route::get('profiles/images/{filename}', [ProfileController::class, 'getProfilePic']);
 
     Route::apiResource('profiles', ProfileController::class);
     Route::post('curriculums/approve/{id}', [CurriculumController::class, 'approveCurriculum']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use Illuminate\Support\Facades\Storage;
 use Mockery\Matcher\Subset;
 
 class SubjectController extends Controller
@@ -32,7 +33,26 @@ class SubjectController extends Controller
      */
     public function store(StoreSubjectRequest $request)
     {
-        return Subject::create($request->all());
+        $file = $request->file('syllabus');
+
+        $subject = Subject::create([
+            'subject_code' => $request->subject_code,
+            'description' => $request->description,
+            'user_id' => $request->user()->id,
+            'department_id' => $request->subject_code
+        ]);
+
+        if (!$subject)
+            return response()->json(['message' => 'error']);
+
+        $subject_id = $subject->id;
+        $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+        Storage::putFileAs('syllabus', $file, $fileName);
+
+        $subject->syllabus_path = $fileName;
+        $subject->update();
+
+        return response()->json($subject);
     }
 
     /**
@@ -56,7 +76,8 @@ class SubjectController extends Controller
      */
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
-        //
+        return $request;
+        // $subject->update($request->all());
     }
 
     /**
