@@ -54,17 +54,60 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-
         return response()->json(['message' => 'Successfully logged out']);
     }
 
     public function getuser(Request $request)
     {
         $user = auth()->user();
-        $user = User::where('id', $user['id'])->with('profile', 'department')->first();
+        $user = User::where('id', $user->id)->with('profile')->first();
         return response()->json($user);
     }
 
+    
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $response = Password::sendResetLink(
+            $request->only('email')
+        );
+        return $response == Password::RESET_LINK_SENT
+            ? response()->json(['message' => 'Password reset email sent.'], 200)
+            : response()->json(['message' => 'Failed to send password reset email.'], 400);
+        }
+        
+        public function resetPassword(Request $request)
+        {
+            $request->validate([
+                'token' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8|confirmed',
+        ]);
+        
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                    ])->setRememberToken(Str::random(60));
+                    
+                    $user->save();
+                    
+                    event(new PasswordReset($user));
+                }
+            );
+            
+            return $status === Password::PASSWORD_RESET
+            ? response()->json(['message' => 'password reset succesfully.'], 200)
+            : response()->json(['message' => 'failed to reset the password.'], 400);
+        }
+        
+        public function broker()
+        {
+            return Password::broker();
+        }
+    }
+    
     // public function forgetPassword(Request $request)
     // {
     //     $validator = Validator::make($request->all(), [
@@ -93,46 +136,3 @@ class AuthController extends Controller
 
     //     return response()->json(['message' => 'Code sent to email']);
     // }
-
-    public function forgotPassword(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
-        $response = Password::sendResetLink(
-            $request->only('email')
-        );
-        return $response == Password::RESET_LINK_SENT
-            ? response()->json(['message' => 'Password reset email sent.'], 200)
-            : response()->json(['message' => 'Failed to send password reset email.'], 400);
-    }
-
-    public function resetPassword(Request $request)
-    {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
-
-                $user->save();
-
-                event(new PasswordReset($user));
-            }
-        );
-
-        return $status === Password::PASSWORD_RESET
-            ? response()->json(['message' => 'password reset succesfully.'], 200)
-            : response()->json(['message' => 'failed to reset the password.'], 400);
-    }
-
-    public function broker()
-    {
-        return Password::broker();
-    }
-}

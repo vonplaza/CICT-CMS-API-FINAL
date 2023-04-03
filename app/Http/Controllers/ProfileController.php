@@ -22,8 +22,9 @@ class ProfileController extends Controller
     public function index()
     {
         $profiles = Profile::all();
+        return response()->json($profiles);
         // $profiles = User::with('profile')->get();
-        return ProfileResource::collection($profiles);
+        // return ProfileResource::collection($profiles);
     }
 
     /**
@@ -64,7 +65,10 @@ class ProfileController extends Controller
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
         $profile->update($request->all());
-        return Profile::find($request->userId);
+        return response()->json([
+            'message'=>'profile updated successfuly',
+            'profile' => $request->user()->profile
+        ]);
     }
 
     /**
@@ -77,19 +81,29 @@ class ProfileController extends Controller
 
     public function uploadPic(Request $request)
     {
+        $fields = $request->validate([
+            'image' => 'required|image|mimes:png,jpg,jpeg'
+        ]);
+
         $file = $request->file('image');
         if (!$file)
-            return response()->json(['message' => 'profile pic is required']);
+            return response()->json(['message' => 'profile pic is required'], 404);
+        
+        $profile = auth()->user()->profile;
 
-        $userId = $request->user()->id;
-        $fileName = $userId . '-' . time() . '-' . $file->getClientOriginalName();
+        if(!$profile)
+            return response()->json(['message' => 'profile has not been set up'], 404);
+
+        $fileName = $profile->id . '-' . time() . '-' . $file->getClientOriginalName();
         Storage::putFileAs('profilePics', $file, $fileName);
 
-        $profile = Profile::find($userId);
-        $profile->profile_pic = $fileName;
-        $profile->save();
+        $profile->update(['profile_pic' => $fileName]);
 
-        return response()->json(['message' => 'success', 'data' => $request->user()->profile]);
+        return response()->json(['message' => 'success', 'data' => $profile]);
+        // $profile = Profile::find($userId);
+        // $profile->profile_pic = $fileName;
+        // $profile->save();
+
     }
 
     public function getProfilePic(Request $request, string $pic)

@@ -26,14 +26,12 @@ class UpdateProfileRequest extends FormRequest
             'address' => ['sometimes', 'required'],
             'phoneNo' => ['sometimes', 'required'],
             'birthDate' => ['sometimes', 'required'],
-            'profilePic' => ['sometimes', 'required'],
         ];
     }
 
     public function prepareForValidation()
     {
         $this->merge([
-            'profile_pic_path' => $this->profilePicPath,
             'phone_no' => $this->phoneNo,
             'birth_date' => $this->birthDate
         ]);
