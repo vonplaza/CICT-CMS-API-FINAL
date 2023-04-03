@@ -20,6 +20,7 @@ Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('users', UserController::class);
 
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('subjects', SubjectController::class);

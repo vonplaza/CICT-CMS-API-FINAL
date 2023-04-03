@@ -97,6 +97,7 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'code' => ['provider' => 'users', 'expire' => 60,],
     ],
 
     /*
