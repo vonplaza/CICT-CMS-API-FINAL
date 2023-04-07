@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('curriculums/submitRevision', [CurriculumController::class, 'submitRevision']);
     Route::post('curriculums/updateRevision', [CurriculumController::class, 'updateRevision']);
     Route::post('curriculums/approveRevision/{id}', [CurriculumController::class, 'approveRevision']);
+    Route::get('curriculums/revisions', [CurriculumController::class, 'curriculumRevisionList']);
+    Route::get('curriculums/revisions/{id}', [CurriculumController::class, 'curriculumRevision']);
     Route::apiResource('curriculums', CurriculumController::class);
 
     Route::apiResource('comments', CommentController::class);

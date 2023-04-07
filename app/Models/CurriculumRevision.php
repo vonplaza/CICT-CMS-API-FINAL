@@ -21,18 +21,19 @@ class CurriculumRevision extends Model
         'user_id',
     ];
 
+
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function curriculum()
     {
-        $this->belongsTo(Curriculum::class);
+        return $this->belongsTo(Curriculum::class);
     }
 
     public function comments()
     {
-        $this->hasMany(Curriculum::class);
+        return $this->hasMany(Curriculum::class);
     }
 }

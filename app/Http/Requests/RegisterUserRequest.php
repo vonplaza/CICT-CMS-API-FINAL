@@ -11,7 +11,8 @@ class RegisterUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->tokenCan('can_create_user');
+        // return $this->user()->tokenCan('can_create_user');
+        return true;
     }
 
     /**

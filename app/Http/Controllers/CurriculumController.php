@@ -20,9 +20,21 @@ class CurriculumController extends Controller
      */
     public function index()
     {
-        $curriculums = Curriculum::all();
-        // $curriculums = Curriculum::with('user')->get();
+        // $curriculums = Curriculum::all();
+        $curriculums = Curriculum::with('user.profile')->get();
         return response()->json($curriculums);
+    }
+
+    public function curriculumRevisionList()
+    {
+        return CurriculumRevision::with('curriculum')->get();
+        // return response()->json($curriculums);
+    }
+
+    public function curriculumRevision($id)
+    {
+        return CurriculumRevision::find($id);
+        // return response()->json($curriculums);
     }
 
     /**
@@ -100,6 +112,8 @@ class CurriculumController extends Controller
         return response()->json($curriculum);
     }
 
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -116,7 +130,7 @@ class CurriculumController extends Controller
      */
     public function show(Curriculum $curriculum)
     {
-        //
+        return $curriculum;
     }
 
     /**
