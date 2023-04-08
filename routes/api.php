@@ -23,6 +23,8 @@ Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('users/changePass', [UserController::class, 'changePassword']);
+
     Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
     Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus']);
     Route::apiResource('subjects', SubjectController::class);
