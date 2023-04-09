@@ -65,10 +65,11 @@ class ProfileController extends Controller
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
         $profile->update($request->all());
-        return response()->json([
-            'message' => 'profile updated successfuly',
-            'profile' => $request->user()->profile
-        ]);
+        // return response()->json([
+        //     'message' => 'profile updated successfuly',
+        //     'profile' => $request->user()->profile
+        // ]);
+        return $request->user()->profile;
     }
 
     /**
@@ -99,7 +100,7 @@ class ProfileController extends Controller
 
         $profile->update(['profile_pic' => $fileName]);
 
-        return response()->json(['message' => 'success', 'data' => $profile]);
+        return response()->json(['message' => 'success', 'profile' => $profile]);
     }
 
     public function getProfilePic(Request $request, string $pic)

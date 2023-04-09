@@ -61,7 +61,7 @@ class AuthController extends Controller
     public function getuser(Request $request)
     {
         $user = auth()->user();
-        $user = User::where('id', $user->id)->with('profile')->first();
+        $user = User::where('id', $user->id)->with('profile', 'department')->first();
         return response()->json($user);
     }
 
