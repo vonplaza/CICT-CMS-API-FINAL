@@ -24,6 +24,8 @@ class StoreCurriculumRequest extends FormRequest
     {
         return [
             'subjects' => 'required',
+            'version' => 'required',
+            'departmentId' => 'required'
         ];
     }
 
@@ -33,7 +35,8 @@ class StoreCurriculumRequest extends FormRequest
             'metadata' => json_encode($this->subjects),
             'user_id' => $this->User()->id,
             'department_id' => $this->User()->department_id,
-            'version' => '1.0'
+            'version' => $this->version,
+            'status' => 'p'
         ]);
     }
 }

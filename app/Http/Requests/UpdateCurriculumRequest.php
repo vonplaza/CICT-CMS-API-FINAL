@@ -11,7 +11,7 @@ class UpdateCurriculumRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class UpdateCurriculumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'subjects' => 'required',
+            'version' => 'required',
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'metadata' => json_encode($this->subjects)
+        ]);
     }
 }

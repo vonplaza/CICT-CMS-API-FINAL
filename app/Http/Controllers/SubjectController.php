@@ -40,11 +40,11 @@ class SubjectController extends Controller
             'subject_code' => $request->subject_code,
             'description' => $request->description,
             'user_id' => $request->user()->id,
-            'department_id' => $request->subject_code
+            'department_id' => $request->department_id
         ]);
 
         if (!$subject)
-            return response()->json(['message' => 'error']);
+            return response()->json(['message' => 'error'], 401);
 
         $subject_id = $subject->id;
         $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();

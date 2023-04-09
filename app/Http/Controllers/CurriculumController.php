@@ -128,8 +128,15 @@ class CurriculumController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Curriculum $curriculum)
+    public function show($id)
     {
+        // return $curriculum;
+        $curriculum = Curriculum::with('user.profile', 'department')->find($id);
+
+        if (!$curriculum) {
+            return response()->json(['message' => 'cannot find curriculum'], 404);
+        }
+
         return $curriculum;
     }
 
@@ -146,7 +153,8 @@ class CurriculumController extends Controller
      */
     public function update(UpdateCurriculumRequest $request, Curriculum $curriculum)
     {
-        //
+        $curriculum->update($request->all());
+        return response()->json($curriculum);
     }
 
     /**
