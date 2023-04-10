@@ -18,16 +18,16 @@ class Comment extends Model
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function curriculum()
     {
-        $this->belongsTo(Curriculum::class);
+        return $this->belongsTo(Curriculum::class);
     }
 
     public function curriculumRevision()
     {
-        $this->belongsTo(CurriculumRevision::class);
+        return $this->belongsTo(CurriculumRevision::class);
     }
 }

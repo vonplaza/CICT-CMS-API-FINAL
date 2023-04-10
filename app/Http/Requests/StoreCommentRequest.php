@@ -23,9 +23,8 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => ['required'],
-            'curriculumId' => ['sometimes'],
-            'curriculumRevisionId' => ['sometimes'],
+            'curriculumId' => ['sometimes', 'required'],
+            'curriculumRevisionId' => ['sometimes', 'required'],
             'body' => ['required'],
         ];
     }
@@ -33,7 +32,7 @@ class StoreCommentRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'user_id' => $this->userId,
+            'user_id' => $this->user()->id,
             'curriculum_id' => $this->curriculumId,
             'curriculum_revision_id' => $this->curriculumRevisionId
         ]);

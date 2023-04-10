@@ -13,7 +13,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::all();
+        $comments = Comment::with('user.profile')->orderByDesc('updated_at')->get();
         return response()->json($comments);
     }
 
@@ -30,7 +30,9 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        return Comment::create($request->all());
+        $comment = Comment::create($request->all());
+        $comment = Comment::with('user.profile')->find($comment->id);
+        return response()->json($comment);
     }
 
     /**

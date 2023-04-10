@@ -17,6 +17,6 @@ class CurriculumOld extends Model
 
     public function curriculum()
     {
-        $this->belongsTo(Curriculum::class);
+        return $this->belongsTo(Curriculum::class);
     }
 }
