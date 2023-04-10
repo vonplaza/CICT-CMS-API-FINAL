@@ -31,6 +31,7 @@ class SubmitRevisionRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
+            'metadata' => json_encode($this->metadata),
             'curriculum_id' => $this->curriculumId,
             'user_id' => $this->user()->id,
         ]);

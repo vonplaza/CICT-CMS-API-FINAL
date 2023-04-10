@@ -21,19 +21,19 @@ class CurriculumController extends Controller
     public function index()
     {
         // $curriculums = Curriculum::all();
-        $curriculums = Curriculum::with('user.profile')->get();
+        $curriculums = Curriculum::with('user.profile', 'department')->get();
         return response()->json($curriculums);
     }
 
     public function curriculumRevisionList()
     {
-        return CurriculumRevision::with('curriculum')->get();
+        return CurriculumRevision::with('curriculum.department', 'user.profile')->get();
         // return response()->json($curriculums);
     }
 
     public function curriculumRevision($id)
     {
-        return CurriculumRevision::find($id);
+        return CurriculumRevision::with('curriculum.department', 'user.profile')->find($id);
         // return response()->json($curriculums);
     }
 
