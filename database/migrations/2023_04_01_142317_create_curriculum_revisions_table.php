@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('curriculum_revisions', function (Blueprint $table) {
             $table->id();
             $table->integer('curriculum_id');
+            $table->integer('approve_by')->nullable();
             $table->integer('user_id');
             $table->decimal('version')->default(1.0);
             $table->string('status')->default('p');

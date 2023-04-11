@@ -34,7 +34,7 @@ class StoreCurriculumRequest extends FormRequest
         $this->merge([
             'metadata' => json_encode($this->subjects),
             'user_id' => $this->User()->id,
-            'department_id' => $this->User()->department_id,
+            'department_id' => $this->departmentId,
             'version' => $this->version,
             'status' => 'p'
         ]);

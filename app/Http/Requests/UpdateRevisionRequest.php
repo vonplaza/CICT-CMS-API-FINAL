@@ -13,14 +13,14 @@ class UpdateRevisionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $curriculum = CurriculumRevision::find($this->id);
-        if (!$curriculum) {
-            return false;
-        }
+        // $curriculum = CurriculumRevision::find($this->id);
+        // if (!$curriculum) {
+        //     return false;
+        // }
 
-        if ($curriculum->user_id != $this->user()->id) {
-            return false;
-        }
+        // if ($curriculum->user_id != $this->user()->id) {
+        //     return false;
+        // }
         return true;
     }
 
@@ -32,8 +32,15 @@ class UpdateRevisionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'metadata' => ['sometimes', 'required'],
+            'subjects' => ['sometimes', 'required'],
             'version' => ['sometimes', 'required'],
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'metadata' => json_encode($this->subjects)
+        ]);
     }
 }

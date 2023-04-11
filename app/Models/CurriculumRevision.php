@@ -26,6 +26,10 @@ class CurriculumRevision extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function approveBy()
+    {
+        return $this->belongsTo(User::class, 'approve_by');
+    }
 
     public function curriculum()
     {

@@ -25,7 +25,6 @@ class StoreSubjectRequest extends FormRequest
         $rules = [
             'subjectCode' => ['required', 'unique:subjects,subject_code'],
             'description' => ['required'],
-            'departmentId' => ['required'],
             'syllabus' => 'required|file|mimes:pdf'
         ];
 

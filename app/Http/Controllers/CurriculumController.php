@@ -47,7 +47,8 @@ class CurriculumController extends Controller
 
     public function approveCurriculum(Request $request, $id)
     {
-        if ($request->user()->tokenCan('can_approve_revision')) {
+        // if ($request->user()->tokenCan('can_approve_revision')) {
+        if (true) {
             $curriclum = Curriculum::find($id);
 
             if (!$curriclum) {
@@ -95,6 +96,8 @@ class CurriculumController extends Controller
             $refereceCurriculum->save();
 
             $curriculum->update(['status' => 'a']);
+            // $curriculum->update(['status' => 'a', 'approve_by' => $this->user()->id]);
+
 
             return response()->json(['message' => 'success']);
         }
@@ -106,7 +109,6 @@ class CurriculumController extends Controller
         $curriculum = CurriculumRevision::find($request->id);
         // $curriculum->update($request->all());
         $curriculum->update([
-            'version' => $request->version,
             'metadata' => $request->metadata,
         ]);
         return response()->json($curriculum);
