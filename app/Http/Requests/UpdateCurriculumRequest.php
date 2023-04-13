@@ -24,13 +24,15 @@ class UpdateCurriculumRequest extends FormRequest
         return [
             'subjects' => 'required',
             'version' => 'required',
+            'departmentId' => 'required'
         ];
     }
 
     public function prepareForValidation()
     {
         $this->merge([
-            'metadata' => json_encode($this->subjects)
+            'metadata' => json_encode($this->subjects),
+            'department_id' => $this->departmentId
         ]);
     }
 }
