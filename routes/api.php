@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ElectiveSubjectController;
@@ -22,8 +23,13 @@ Route::apiResource('users', UserController::class);
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
+Route::get('contents', [ContentController::class, 'getContent']);
+Route::get('content/logo/{logo}', [ContentController::class, 'getLogo']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('users/changePass', [UserController::class, 'changePassword']);
+
+    Route::post('content', [ContentController::class, 'updateContent']);
 
     Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
     Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus']);
