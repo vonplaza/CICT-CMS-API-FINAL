@@ -11,7 +11,7 @@ class ContentController extends Controller
 {
     public function getContent()
     {
-        return  response()->json(Content::find(1));
+        return  response()->json(Content::first());
     }
 
     public function updateContent(Request $request)
@@ -22,6 +22,7 @@ class ContentController extends Controller
             'title_text' => 'required'
         ]);
 
+
         $file = $request->file('logo');
         if ($file) {
             $fileName = time() . '-' . $file->getClientOriginalName();
@@ -30,11 +31,52 @@ class ContentController extends Controller
         }
 
         // $fields['is_dark_mode_active'] = $fields['is_dark_mode_active'] == '1' ? true : false;
-        $content = Content::find(1);
+        $content = Content::first();
         $content->update($fields);
 
 
         return response()->json($content);
+    }
+
+    public function initContent(Request $request){
+        $content = Content::first();
+        if(!$content){
+            $fields = $request->validate([
+                'logo' => 'sometimes|required|image|mimes:png,jpg,jpeg',
+                'is_dark_mode_active' => 'required',
+                'title_text' => 'required'
+            ]);
+
+        $file = $request->file('logo');
+        if ($file) {
+            $fileName = time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('content', $file, $fileName);
+            $fields['logo_path'] = $fileName;
+        }
+
+        $contentCreated = Content::create($fields);
+        return  response()->json($contentCreated, 201 ) ;
+
+        }
+        return  response()->json( 409 ) ;
+
+        // $fields = $request->validate([
+        //     'logo' => 'sometimes|required|image|mimes:png,jpg,jpeg',
+        //     'is_dark_mode_active' => 'required',
+        //     'title_text' => 'required'
+        // ]);
+
+
+        // $file = $request->file('logo');
+        // if ($file) {
+        //     $fileName = time() . '-' . $file->getClientOriginalName();
+        //     Storage::putFileAs('content', $file, $fileName);
+        //     $fields['logo_path'] = $fileName;
+        // }
+
+        // // $fields['is_dark_mode_active'] = $fields['is_dark_mode_active'] == '1' ? true : false;
+        // $content = Content::find(1);
+        // $content->update($fields);
     }
 
     public function getLogo(Request $request, string $logo)
