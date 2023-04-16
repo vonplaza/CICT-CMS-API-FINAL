@@ -30,7 +30,6 @@ class ContentController extends Controller
             $fields['logo_path'] = $fileName;
         }
 
-        // $fields['is_dark_mode_active'] = $fields['is_dark_mode_active'] == '1' ? true : false;
         $content = Content::first();
         $content->update($fields);
 
@@ -59,24 +58,6 @@ class ContentController extends Controller
 
         }
         return  response()->json( 409 ) ;
-
-        // $fields = $request->validate([
-        //     'logo' => 'sometimes|required|image|mimes:png,jpg,jpeg',
-        //     'is_dark_mode_active' => 'required',
-        //     'title_text' => 'required'
-        // ]);
-
-
-        // $file = $request->file('logo');
-        // if ($file) {
-        //     $fileName = time() . '-' . $file->getClientOriginalName();
-        //     Storage::putFileAs('content', $file, $fileName);
-        //     $fields['logo_path'] = $fileName;
-        // }
-
-        // // $fields['is_dark_mode_active'] = $fields['is_dark_mode_active'] == '1' ? true : false;
-        // $content = Content::find(1);
-        // $content->update($fields);
     }
 
     public function getLogo(Request $request, string $logo)
