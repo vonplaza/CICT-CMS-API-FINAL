@@ -30,9 +30,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('users/changePass', [UserController::class, 'changePassword']);
 
     Route::post('content', [ContentController::class, 'updateContent']);
-
-    Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
     Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus']);
+    Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
     Route::apiResource('subjects', SubjectController::class);
     Route::apiResource('electiveSubjects', ElectiveSubjectController::class);
 
