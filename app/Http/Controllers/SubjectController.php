@@ -78,6 +78,7 @@ class SubjectController extends Controller
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
         $subject->update($request->all());
+        $subject = Subject::with('department')->find($subject->id);
         return $subject;
     }
 

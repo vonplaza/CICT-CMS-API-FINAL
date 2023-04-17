@@ -63,8 +63,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(User $user)
+    public function update(Request $request, User $user)
     {
+        // return $user;
+        $user->update($request->all());
+        return $user;
     }
 
     /**

@@ -21,11 +21,10 @@ class DatabaseSeeder extends Seeder
             ->hasProfile(1)
             ->create();
 
-        // Department::factory(2)
-        //     ->hasCurriculums(1)
-        //     ->create();
+        Department::factory(2)
+            ->create();
 
-
+        
 
 
         // $dep->curriculums()->createMany(

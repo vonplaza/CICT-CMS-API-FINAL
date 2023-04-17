@@ -14,7 +14,8 @@ class Subject extends Model
         'department_id',
         'subject_code',
         'description',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
     public function department()

@@ -23,6 +23,9 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            if($request->user()->status == 'i')
+                return response()->json(['message' => 'account is not available'], 401);
+
             $authorize = [
                 'reviewer' => ['can_approve_revision', 'can_comment'],
 
