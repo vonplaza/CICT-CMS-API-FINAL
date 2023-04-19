@@ -23,7 +23,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            if($request->user()->status == 'i')
+            if ($request->user()->status == 'i')
                 return response()->json(['message' => 'account is not available'], 401);
 
             $authorize = [
@@ -72,23 +72,35 @@ class AuthController extends Controller
 
     public function forgotPassword(Request $request)
     {
-        // $request->validate(['email' => 'required|email']);
-        // $response = Password::sendResetLink(
-        //     $request->only('email')
-        // );
-        // return $response == Password::RESET_LINK_SENT
-        //     ? response()->json(['message' => 'Password reset email sent.'], 200)
-        //     : response()->json(['message' => 'Failed to send password reset email.'], 400);
-
         $request->validate(['email' => 'required|email']);
 
-        $status = Password::sendResetLink(
+        $existingRequest = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+
+        if ($existingRequest) {
+            // Email is already in the password reset table
+            return response()->json(['message' => 'Password reset email has already been sent.'], 400);
+        }
+
+        $response = Password::sendResetLink(
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
+
+
+        return $response == Password::RESET_LINK_SENT
             ? response()->json(['message' => 'Password reset email sent.'], 200)
             : response()->json(['message' => 'Failed to send password reset email.'], 400);
+        return;
+
+        // $request->validate(['email' => 'required|email']);
+
+        // $status = Password::sendResetLink(
+        //     $request->only('email')
+        // );
+
+        // return $status === Password::RESET_LINK_SENT
+        //     ? response()->json(['message' => 'Password reset email sent.'], 200)
+        //     : response()->json(['message' => 'Failed to send password reset email.'], 400);
     }
 
     public function resetPassword(Request $request)
