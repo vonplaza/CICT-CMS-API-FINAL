@@ -133,4 +133,16 @@ class SubjectController extends Controller
     {
         return ElectiveSubject::all();
     }
+
+    public function editElectiveSubject(Request $request, $id)
+    {
+        $elective = ElectiveSubject::find($id);
+        if (!$elective) {
+            return response()->json(['message' => 'electiveSubject not found'], 404);
+        }
+
+        $elective->update($request->all());
+
+        return $elective;
+    }
 }
