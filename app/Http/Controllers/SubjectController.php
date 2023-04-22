@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Models\ElectiveSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Mockery\Matcher\Subset;
@@ -126,5 +127,10 @@ class SubjectController extends Controller
     public function destroy(Subject $subject)
     {
         //
+    }
+
+    public function electiveSubjectsList()
+    {
+        return ElectiveSubject::all();
     }
 }
