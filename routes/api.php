@@ -27,6 +27,8 @@ Route::get('contents', [ContentController::class, 'getContent']);
 Route::get('content/logo/{logo}', [ContentController::class, 'getLogo']);
 Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus']);
 
+Route::get('electiveSubjects', [SubjectController::class, 'electiveSubjectsList']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('users/changePass', [UserController::class, 'changePassword']);
 
