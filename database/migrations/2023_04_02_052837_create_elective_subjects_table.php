@@ -14,11 +14,7 @@ return new class extends Migration
         Schema::create('elective_subjects', function (Blueprint $table) {
             $table->id();
             $table->string('track')->unique();
-            $table->string('elective_1')->unique();
-            $table->string('elective_2')->unique();
-            $table->string('elective_3')->unique();
-            $table->string('elective_4')->unique();
-            $table->string('elective_5')->unique();
+            $table->json('metadata')->unique();
             $table->timestamps();
         });
     }
