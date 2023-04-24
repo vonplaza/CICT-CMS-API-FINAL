@@ -40,6 +40,7 @@ class SubjectController extends Controller
         $subject = Subject::create([
             'subject_code' => $request->subject_code,
             'description' => $request->description,
+            'is_elective' => $request->is_elective,
             'user_id' => $request->user()->id,
             'department_id' => $request->department_id
         ]);
@@ -47,14 +48,17 @@ class SubjectController extends Controller
         if (!$subject)
             return response()->json(['message' => 'error'], 401);
 
-        $subject_id = $subject->id;
-        $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
-        Storage::putFileAs('syllabus', $file, $fileName);
+        if (!$request->is_elective) {
+            $subject_id = $subject->id;
+            $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('syllabus', $file, $fileName);
 
-        $subject->syllabus_path = $fileName;
-        $subject->update();
+            $subject->syllabus_path = $fileName;
+            $subject->update();
+        }
 
         return response()->json($subject);
+        // return response()->json($request->all());
     }
 
     /**
