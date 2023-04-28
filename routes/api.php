@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ElectiveController;
 use App\Http\Controllers\ElectiveSubjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
@@ -27,8 +28,8 @@ Route::get('contents', [ContentController::class, 'getContent']);
 Route::get('content/logo/{logo}', [ContentController::class, 'getLogo']);
 Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus']);
 
-Route::get('electiveSubjects', [SubjectController::class, 'electiveSubjectsList']);
-Route::patch('electiveSubjects/{id}', [SubjectController::class, 'editElectiveSubject']);
+// Route::get('electiveSubjects', [SubjectController::class, 'electiveSubjectsList']);
+// Route::patch('electiveSubjects/{id}', [SubjectController::class, 'editElectiveSubject']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('users/changePass', [UserController::class, 'changePassword']);
@@ -40,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
     Route::apiResource('subjects', SubjectController::class);
     Route::apiResource('electiveSubjects', ElectiveSubjectController::class);
+    Route::apiResource('electives', ElectiveController::class);
 
     Route::post('profiles/upload', [ProfileController::class, 'uploadPic']);
     Route::apiResource('profiles', ProfileController::class);

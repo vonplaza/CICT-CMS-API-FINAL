@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreElectiveSubjectRequest extends FormRequest
+class UpdateElectiveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        // return $this->user()->tokenCan('can_create_elective_subject');
-        return true;
+        return false;
     }
 
     /**
@@ -23,14 +22,7 @@ class StoreElectiveSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'track' => 'required|string|unique:elective_subjects,track',
+            //
         ];
-    }
-
-    public function prepareForValidation()
-    {
-        return $this->merge([
-            'metadata' => json_encode($this->metadata),
-        ]);
     }
 }

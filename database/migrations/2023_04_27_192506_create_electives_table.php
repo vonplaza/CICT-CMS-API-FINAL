@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('elective_subjects', function (Blueprint $table) {
+        Schema::create('electives', function (Blueprint $table) {
             $table->id();
-            $table->string('track')->unique();
-            $table->json('metadata');
+            $table->string('description')->unique();
+            $table->string('syllabus_path');
+            $table->string('status')->default('a');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('elective_subjects');
+        Schema::dropIfExists('electives');
     }
 };

@@ -37,27 +37,27 @@ class ContentController extends Controller
         return response()->json($content);
     }
 
-    public function initContent(Request $request){
+    public function initContent(Request $request)
+    {
         $content = Content::first();
-        if(!$content){
+        if (!$content) {
             $fields = $request->validate([
                 'logo' => 'sometimes|required|image|mimes:png,jpg,jpeg',
                 'is_dark_mode_active' => 'required',
                 'title_text' => 'required'
             ]);
 
-        $file = $request->file('logo');
-        if ($file) {
-            $fileName = time() . '-' . $file->getClientOriginalName();
-            Storage::putFileAs('content', $file, $fileName);
-            $fields['logo_path'] = $fileName;
-        }
+            $file = $request->file('logo');
+            if ($file) {
+                $fileName = time() . '-' . $file->getClientOriginalName();
+                Storage::putFileAs('content', $file, $fileName);
+                $fields['logo_path'] = $fileName;
+            }
 
-        $contentCreated = Content::create($fields);
-        return  response()->json($contentCreated, 201 ) ;
-
+            $contentCreated = Content::create($fields);
+            return  response()->json($contentCreated, 201);
         }
-        return  response()->json( 409 ) ;
+        return  response()->json(409);
     }
 
     public function getLogo(Request $request, string $logo)

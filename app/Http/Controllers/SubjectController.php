@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateElectiveSubjectRequest2;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Models\ElectiveSubject;
 use Illuminate\Http\Request;
@@ -138,7 +139,7 @@ class SubjectController extends Controller
         return ElectiveSubject::all();
     }
 
-    public function editElectiveSubject(Request $request, $id)
+    public function editElectiveSubject(UpdateElectiveSubjectRequest2 $request, $id)
     {
         $elective = ElectiveSubject::find($id);
         if (!$elective) {
