@@ -53,7 +53,6 @@ class ElectiveController extends Controller
      */
     public function show(Elective $elective)
     {
-        //
     }
 
     /**

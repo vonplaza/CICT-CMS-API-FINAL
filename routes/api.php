@@ -18,13 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('profiles/images/{image}', [ProfileController::class, 'getProfilePic']);
-Route::apiResource('departments', DepartmentController::class);
-Route::apiResource('users', UserController::class);
 
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
-Route::get('contents', [ContentController::class, 'getContent']);
 Route::get('content/logo/{logo}', [ContentController::class, 'getLogo']);
 Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus']);
 
@@ -32,6 +29,9 @@ Route::get('subjectsGetSyllabus/{file}', [SubjectController::class, 'getSyllabus
 // Route::patch('electiveSubjects/{id}', [SubjectController::class, 'editElectiveSubject']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('contents', [ContentController::class, 'getContent']);
+    Route::apiResource('departments', DepartmentController::class);
+    Route::apiResource('users', UserController::class);
     Route::post('users/changePass', [UserController::class, 'changePassword']);
 
     Route::post('content', [ContentController::class, 'updateContent']);
