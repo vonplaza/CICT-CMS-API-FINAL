@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Http\Resources\DepartmentResource;
+use App\Models\Subject;
 
 class DepartmentController extends Controller
 {
@@ -15,7 +16,7 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = Department::all();
-        $departments = Department::with('members.profile', 'curriculums')->get();
+        $departments = Department::with('members.profile', 'curriculums', 'subjects')->get();
         return response()->json(DepartmentResource::collection($departments));
         // return DepartmentResource::collection($departments);
     }

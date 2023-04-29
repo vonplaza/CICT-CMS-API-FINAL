@@ -23,22 +23,22 @@ class UpdateElectiveSubjectRequest extends FormRequest
     {
         return [
             'track' => 'sometimes|required|string|unique:elective_subjects,track',
-            'elective1' => 'sometimes|required|string',
-            'elective2' => 'sometimes|required|string',
-            'elective3' => 'sometimes|required|string',
-            'elective4' => 'sometimes|required|string',
-            'elective5' => 'sometimes|required|string',
+            'metadata' => 'sometimes|required|string',
+
         ];
     }
 
     public function prepareForValidation()
     {
-        return $this->merge([
-            'elective_1' => $this->elective1,
-            'elective_2' => $this->elective2,
-            'elective_3' => $this->elective3,
-            'elective_4' => $this->elective4,
-            'elective_5' => $this->elective5,
-        ]);
+        if ($this->track) {
+            $this->merge([
+                'track' => $this->track,
+            ]);
+        }
+        if ($this->metadata) {
+            $this->merge([
+                'metadata' => json_encode($this->metadata)
+            ]);
+        }
     }
 }

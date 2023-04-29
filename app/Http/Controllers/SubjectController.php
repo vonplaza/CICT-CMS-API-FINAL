@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateElectiveSubjectRequest2;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Models\ElectiveSubject;
 use Illuminate\Http\Request;
@@ -40,6 +41,7 @@ class SubjectController extends Controller
         $subject = Subject::create([
             'subject_code' => $request->subject_code,
             'description' => $request->description,
+            'is_elective' => $request->is_elective,
             'user_id' => $request->user()->id,
             'department_id' => $request->department_id
         ]);
@@ -47,14 +49,17 @@ class SubjectController extends Controller
         if (!$subject)
             return response()->json(['message' => 'error'], 401);
 
-        $subject_id = $subject->id;
-        $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
-        Storage::putFileAs('syllabus', $file, $fileName);
+        if (!$request->is_elective) {
+            $subject_id = $subject->id;
+            $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('syllabus', $file, $fileName);
 
-        $subject->syllabus_path = $fileName;
-        $subject->update();
+            $subject->syllabus_path = $fileName;
+            $subject->update();
+        }
 
         return response()->json($subject);
+        // return response()->json($request->all());
     }
 
     /**
@@ -76,10 +81,46 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function updateSubject(UpdateSubjectRequest $request, $id)
+    {
+        $file = $request->file('syllabus');
+
+        $subject = Subject::find($id);
+
+        $subject->update($request->all());
+
+        if ($file) {
+            $subject_id = $subject->id;
+            $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('syllabus', $file, $fileName);
+
+            $subject->syllabus_path = $fileName;
+            $subject->update();
+        }
+
+        $subject = Subject::with('department')->find($subject->id);
+
+        return $subject;
+    }
+
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
+        $file = $request->file('syllabus');
+
+
         $subject->update($request->all());
+
+        if ($file) {
+            $subject_id = $subject->id;
+            $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('syllabus', $file, $fileName);
+
+            $subject->syllabus_path = $fileName;
+            $subject->update();
+        }
+
         $subject = Subject::with('department')->find($subject->id);
+
         return $subject;
     }
 
@@ -134,7 +175,7 @@ class SubjectController extends Controller
         return ElectiveSubject::all();
     }
 
-    public function editElectiveSubject(Request $request, $id)
+    public function editElectiveSubject(UpdateElectiveSubjectRequest2 $request, $id)
     {
         $elective = ElectiveSubject::find($id);
         if (!$elective) {

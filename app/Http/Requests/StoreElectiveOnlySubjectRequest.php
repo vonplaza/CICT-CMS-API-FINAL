@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSubjectRequest extends FormRequest
+class StoreElectiveOnlySubjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,17 +22,9 @@ class UpdateSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'sometimes|required|string|unique:subjects,description',
-            'syllabus' => 'sometimes|required|file|mimes:pdf'
+            'syllabus' =>  'required|file|mimes:pdf',
+            'description' => 'required|unique:elective_only_subjects,description',
+            'user' => $this->user()->id
         ];
-    }
-
-    public function prepareForValidation()
-    {
-        if ($this->subjectCode) {
-            $this->merge([
-                'subject_code' => $this->subjectCode
-            ]);
-        }
     }
 }

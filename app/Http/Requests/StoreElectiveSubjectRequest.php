@@ -24,22 +24,13 @@ class StoreElectiveSubjectRequest extends FormRequest
     {
         return [
             'track' => 'required|string|unique:elective_subjects,track',
-            'elective1' => 'required|string',
-            'elective2' => 'required|string',
-            'elective3' => 'required|string',
-            'elective4' => 'required|string',
-            'elective5' => 'required|string',
         ];
     }
 
     public function prepareForValidation()
     {
         return $this->merge([
-            'elective_1' => $this->elective1,
-            'elective_2' => $this->elective2,
-            'elective_3' => $this->elective3,
-            'elective_4' => $this->elective4,
-            'elective_5' => $this->elective5,
+            'metadata' => json_encode($this->metadata),
         ]);
     }
 }
