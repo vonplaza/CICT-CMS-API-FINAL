@@ -21,13 +21,24 @@ class CurriculumController extends Controller
     public function index()
     {
         // $curriculums = Curriculum::all();
-        $curriculums = Curriculum::with('user.profile', 'department')->get();
+        $curriculums = Curriculum::with('user.profile', 'department')->orderByDesc('created_at')->get();
+        $curriculums = $curriculums->map(function ($cur) {
+            $cur->is_new = $cur->created_at->diffInDays(now()) < 7;
+            return $cur;
+        });
         return response()->json($curriculums);
     }
 
     public function curriculumRevisionList()
     {
-        return CurriculumRevision::with('curriculum.department', 'user.profile')->get();
+        $revisions = CurriculumRevision::with('curriculum.department', 'user.profile')->orderByDesc('created_at')->get();
+
+        $revisions = $revisions->map(function ($rev) {
+            $rev->is_new = $rev->created_at->diffInDays(now()) < 7;
+            return $rev;
+        });
+
+        return $revisions;
         // return response()->json($curriculums);
     }
 
@@ -138,7 +149,6 @@ class CurriculumController extends Controller
         if (!$curriculum) {
             return response()->json(['message' => 'cannot find curriculum'], 404);
         }
-
         return $curriculum;
     }
 

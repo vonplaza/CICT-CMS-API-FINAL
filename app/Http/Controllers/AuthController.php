@@ -74,18 +74,16 @@ class AuthController extends Controller
     {
         $request->validate(['email' => 'required|email']);
 
-        $existingRequest = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        // $existingRequest = DB::table('password_reset_tokens')->where('email', $request->email)->first();
 
-        if ($existingRequest) {
-            // Email is already in the password reset table
-            return response()->json(['message' => 'Password reset email has already been sent.'], 400);
-        }
+        // if ($existingRequest) {
+        //     // Email is already in the password reset table
+        //     return response()->json(['message' => 'Password reset email has already been sent.'], 400);
+        // }
 
         $response = Password::sendResetLink(
             $request->only('email')
         );
-
-
 
         return $response == Password::RESET_LINK_SENT
             ? response()->json(['message' => 'Password reset email sent.'], 200)

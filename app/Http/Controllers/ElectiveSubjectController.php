@@ -56,6 +56,7 @@ class ElectiveSubjectController extends Controller
     public function update(UpdateElectiveSubjectRequest $request, ElectiveSubject $electiveSubject)
     {
         $electiveSubject->update($request->all());
+        return $electiveSubject;
     }
 
     /**

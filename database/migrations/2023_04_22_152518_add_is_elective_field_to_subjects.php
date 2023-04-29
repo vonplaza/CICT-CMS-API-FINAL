@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('elective_subjects', function (Blueprint $table) {
-            $table->id();
-            $table->string('track')->unique();
-            $table->json('metadata');
-            $table->timestamps();
+        Schema::table('subjects', function (Blueprint $table) {
+            $table->integer('is_elective')->before('description')->default(0);
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('elective_subjects');
+        Schema::table('subjects', function (Blueprint $table) {
+            //
+        });
     }
 };
