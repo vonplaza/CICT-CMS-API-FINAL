@@ -23,7 +23,7 @@ class UpdateSubjectRequest extends FormRequest
     {
         return [
             'description' => 'sometimes|required|string|unique:subjects,description',
-            'subjectCode' => 'sometimes|required|string|unique:subjects,subject_code',
+            'syllabus' => 'sometimes|required|file|mimes:pdf'
         ];
     }
 

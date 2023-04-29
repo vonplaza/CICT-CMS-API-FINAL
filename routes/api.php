@@ -39,8 +39,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
     // Route::post('subjectsUpdateSyllabus/{id}', [SubjectController::class, 'updateSyllabus']);
+    Route::post('subjects/update/{id}', [SubjectController::class, 'updateSubject']);
     Route::apiResource('subjects', SubjectController::class);
     Route::apiResource('electiveSubjects', ElectiveSubjectController::class);
+
+    Route::post('electives/update/{id}', [ElectiveController::class, 'updateSubject']);
     Route::apiResource('electives', ElectiveController::class);
 
     Route::post('profiles/upload', [ProfileController::class, 'uploadPic']);

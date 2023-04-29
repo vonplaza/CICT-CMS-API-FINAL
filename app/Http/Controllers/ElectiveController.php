@@ -79,4 +79,26 @@ class ElectiveController extends Controller
     {
         //
     }
+
+    public function updateSubject(UpdateElectiveRequest $request, $id)
+    {
+        $file = $request->file('syllabus');
+
+        $subject = Elective::find($id);
+
+        $subject->update($request->all());
+
+        if ($file) {
+            $subject_id = $subject->id;
+            $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('syllabus', $file, $fileName);
+
+            $subject->syllabus_path = $fileName;
+            $subject->update();
+        }
+
+        $subject = Elective::find($subject->id);
+
+        return $subject;
+    }
 }

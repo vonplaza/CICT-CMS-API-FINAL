@@ -11,7 +11,7 @@ class UpdateElectiveRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateElectiveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'description' => 'sometimes|required|string|unique:subjects,description',
+            'syllabus' => 'sometimes|required|file|mimes:pdf'
         ];
     }
 }

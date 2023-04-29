@@ -81,10 +81,46 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function updateSubject(UpdateSubjectRequest $request, $id)
+    {
+        $file = $request->file('syllabus');
+
+        $subject = Subject::find($id);
+
+        $subject->update($request->all());
+
+        if ($file) {
+            $subject_id = $subject->id;
+            $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('syllabus', $file, $fileName);
+
+            $subject->syllabus_path = $fileName;
+            $subject->update();
+        }
+
+        $subject = Subject::with('department')->find($subject->id);
+
+        return $subject;
+    }
+
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
+        $file = $request->file('syllabus');
+
+
         $subject->update($request->all());
+
+        if ($file) {
+            $subject_id = $subject->id;
+            $fileName = $subject_id . '-' . time() . '-' . $file->getClientOriginalName();
+            Storage::putFileAs('syllabus', $file, $fileName);
+
+            $subject->syllabus_path = $fileName;
+            $subject->update();
+        }
+
         $subject = Subject::with('department')->find($subject->id);
+
         return $subject;
     }
 
