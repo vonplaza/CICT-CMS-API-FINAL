@@ -24,7 +24,7 @@ class StoreSubjectRequest extends FormRequest
     {
         $rules = [
             'subjectCode' => ['required', 'unique:subjects,subject_code'],
-            'description' => ['required'],
+            'description' => ['required', 'unique:subjects,description'],
             'syllabus' => (!$this->is_elective) ? 'required|file|mimes:pdf' : '',
             'is_elective' => (!!$this->is_elective) ? 'required|unique:subjects' : ''
         ];
@@ -32,7 +32,7 @@ class StoreSubjectRequest extends FormRequest
         // if ($this->hasFile('image')) {
         //     $rules['image'] = 'image|mimes:jpeg,png|max:2048';
         // }
-            
+
         return $rules;
     }
 
