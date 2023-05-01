@@ -32,7 +32,7 @@ class StoreSubjectRequest extends FormRequest
         // if ($this->hasFile('image')) {
         //     $rules['image'] = 'image|mimes:jpeg,png|max:2048';
         // }
-
+            
         return $rules;
     }
 
